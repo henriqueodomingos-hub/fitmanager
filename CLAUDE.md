@@ -2,6 +2,12 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## GitHub Repository
+
+Remote: **https://github.com/henriqueodomingos-hub/fitmanager**
+
+Auto-push is configured via a Stop hook in `.claude/settings.json`. After every Claude Code session, all changes are automatically committed and pushed to `origin master`. The commit message is `auto: atualização via Claude Code`. No manual `git push` is needed.
+
 ## Warning: Non-standard Next.js version
 
 This project uses **Next.js 16.2.4** and **React 19.2.4**, which contain breaking changes from versions in your training data. APIs, conventions, and file structure may differ. Read the relevant guide in `node_modules/next/dist/docs/` before writing any Next.js-specific code. Heed deprecation notices.

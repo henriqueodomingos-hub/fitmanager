@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "Bash(gh *)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"d:/Downloads/Claude code/personal-trainer-app\" && git add -A && git diff --cached --quiet || (git commit -m \"auto: atualização via Claude Code\" && git push origin master)",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}
