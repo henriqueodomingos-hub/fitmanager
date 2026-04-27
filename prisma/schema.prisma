@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  students  Student[]
+}
+
+model Student {
+  id        String    @id @default(cuid())
+  name      String
+  phone     String?
+  email     String?
+  goal      String?
+  photoUrl  String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plans     Plan[]
+  classes   Class[]
+  workouts  Workout[]
+}
+
+model Plan {
+  id           String   @id @default(cuid())
+  name         String
+  totalClasses Int
+  doneClasses  Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  studentId    String
+  student      Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  classes      Class[]
+}
+
+model Class {
+  id        String   @id @default(cuid())
+  date      DateTime
+  duration  Int?
+  notes     String?
+  status    String   @default("SCHEDULED")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  planId    String?
+  plan      Plan?    @relation(fields: [planId], references: [id])
+}
+
+model Workout {
+  id          String     @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  studentId   String
+  student     Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  exercises   Exercise[]
+}
+
+model Exercise {
+  id        String          @id @default(cuid())
+  name      String
+  sets      Int?
+  reps      String?
+  weight    String?
+  tip       String?
+  order     Int             @default(0)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  workoutId String
+  workout   Workout         @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  media     ExerciseMedia[]
+}
+
+model ExerciseMedia {
+  id         String   @id @default(cuid())
+  url        String
+  type       String
+  createdAt  DateTime @default(now())
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+}
